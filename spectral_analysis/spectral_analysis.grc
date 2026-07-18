@@ -44,7 +44,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [304, 8.0]
+    coordinate: [392, 16.0]
     rotation: 0
     state: enabled
 - name: noise_amplitude
@@ -60,7 +60,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [200, 8.0]
+    coordinate: [264, 56.0]
     rotation: 0
     state: enabled
 - name: samp_rate
@@ -72,7 +72,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [128, 8.0]
+    coordinate: [176, 8.0]
     rotation: 0
     state: enabled
 - name: tone_amplitude
@@ -84,7 +84,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [544, 8.0]
+    coordinate: [696, 16.0]
     rotation: 0
     state: enabled
 - name: tone_cn0
@@ -100,7 +100,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [424, 4.0]
+    coordinate: [528, 8.0]
     rotation: 0
     state: enabled
 - name: analog_noise_source_x_0
@@ -142,7 +142,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [8, 180.0]
+    coordinate: [0, 224.0]
     rotation: 0
     state: enabled
 - name: blocks_add_xx_0
@@ -160,7 +160,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [320, 116.0]
+    coordinate: [376, 216.0]
     rotation: 0
     state: enabled
 - name: blocks_throttle2_1
@@ -181,7 +181,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [168, 200.0]
+    coordinate: [216, 280.0]
     rotation: 0
     state: enabled
 - name: import_0
@@ -194,7 +194,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [136, 64.0]
+    coordinate: [168, 88.0]
     rotation: 0
     state: enabled
 - name: qtgui_freq_sink_x_0
@@ -229,7 +229,7 @@ blocks:
     comment: ''
     ctrlpanel: 'False'
     fc: '0'
-    fftsize: '1024'
+    fftsize: '4096'
     freqhalf: 'True'
     grid: 'False'
     gui_hint: ''
@@ -275,7 +275,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [440, 124.0]
+    coordinate: [640, 152.0]
     rotation: 0
     state: enabled
 - name: qtgui_time_sink_x_0
@@ -333,7 +333,7 @@ blocks:
     marker9: '-1'
     name: '""'
     nconnections: '1'
-    size: '512'
+    size: '4096'
     srate: samp_rate
     stemplot: 'False'
     style1: '1'
@@ -372,9 +372,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [440, 196.0]
+    coordinate: [536, 280.0]
     rotation: 0
-    state: disabled
+    state: enabled
 
 connections:
 - [analog_noise_source_x_0, '0', blocks_add_xx_0, '0']
