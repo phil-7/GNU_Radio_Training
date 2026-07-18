@@ -87,15 +87,15 @@ blocks:
     label: FM Station
     label0: Country
     label1: Pop
-    label2: ''
-    label3: ''
+    label2: Hip-Hop
+    label3: Not Sure
     label4: ''
     labels: '[]'
-    num_opts: '2'
+    num_opts: '4'
     option0: 99.1e6
     option1: 99.9e6
-    option2: '2'
-    option3: '3'
+    option2: 102.9e6
+    option3: 101.1e6
     option4: '4'
     options: '[0, 1, 2]'
     orient: Qt.QHBoxLayout
@@ -106,7 +106,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1176, 56.0]
+    coordinate: [920, 88.0]
     rotation: 0
     state: enabled
 - name: freq
@@ -378,6 +378,30 @@ blocks:
     coordinate: [584, 288.0]
     rotation: 0
     state: enabled
+- name: filter_fft_low_pass_filter_1
+  id: filter_fft_low_pass_filter
+  parameters:
+    affinity: ''
+    alias: ''
+    beta: '6.76'
+    comment: Attenuates tone at 19KHz
+    cutoff_freq: 18e3
+    decim: '1'
+    gain: '1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    nthreads: '1'
+    samp_rate: 48e3
+    type: fff
+    width: '500'
+    win: window.WIN_HAMMING
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1176, 616.0]
+    rotation: 0
+    state: enabled
 - name: import_0
   id: import
   parameters:
@@ -471,7 +495,7 @@ blocks:
     bus_structure: null
     coordinate: [512, 144.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: qtgui_freq_sink_x_0_0
   id: qtgui_freq_sink_x
   parameters:
@@ -552,7 +576,7 @@ blocks:
     bus_structure: null
     coordinate: [808, 240.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: qtgui_freq_sink_x_1
   id: qtgui_freq_sink_x
   parameters:
@@ -632,6 +656,87 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [1024, 368.0]
+    rotation: 0
+    state: disabled
+- name: qtgui_freq_sink_x_2
+  id: qtgui_freq_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    autoscale: 'False'
+    average: '1.0'
+    axislabels: 'True'
+    bw: samp_rate / decimation
+    color1: '"blue"'
+    color10: '"dark blue"'
+    color2: '"red"'
+    color3: '"green"'
+    color4: '"black"'
+    color5: '"cyan"'
+    color6: '"magenta"'
+    color7: '"yellow"'
+    color8: '"dark red"'
+    color9: '"dark green"'
+    comment: ''
+    ctrlpanel: 'False'
+    fc: '0'
+    fftsize: '1024'
+    freqhalf: 'True'
+    grid: 'False'
+    gui_hint: ''
+    label: Relative Gain
+    label1: ''
+    label10: ''''''
+    label2: ''''''
+    label3: ''''''
+    label4: ''''''
+    label5: ''''''
+    label6: ''''''
+    label7: ''''''
+    label8: ''''''
+    label9: ''''''
+    legend: 'True'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    name: '""'
+    nconnections: '1'
+    norm_window: 'False'
+    showports: 'False'
+    tr_chan: '0'
+    tr_level: '0.0'
+    tr_mode: qtgui.TRIG_MODE_FREE
+    tr_tag: '""'
+    type: float
+    units: dB
+    update_time: '0.10'
+    width1: '1'
+    width10: '1'
+    width2: '1'
+    width3: '1'
+    width4: '1'
+    width5: '1'
+    width6: '1'
+    width7: '1'
+    width8: '1'
+    width9: '1'
+    wintype: window.WIN_BLACKMAN_hARRIS
+    ymax: '10'
+    ymin: '-140'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1368, 500.0]
     rotation: 0
     state: enabled
 - name: qtgui_time_sink_x_0
@@ -730,104 +835,7 @@ blocks:
     bus_structure: null
     coordinate: [1024, 248.0]
     rotation: 0
-    state: enabled
-- name: qtgui_time_sink_x_1
-  id: qtgui_time_sink_x
-  parameters:
-    affinity: ''
-    alias: ''
-    alpha1: '1.0'
-    alpha10: '1.0'
-    alpha2: '1.0'
-    alpha3: '1.0'
-    alpha4: '1.0'
-    alpha5: '1.0'
-    alpha6: '1.0'
-    alpha7: '1.0'
-    alpha8: '1.0'
-    alpha9: '1.0'
-    autoscale: 'False'
-    axislabels: 'True'
-    color1: blue
-    color10: dark blue
-    color2: red
-    color3: green
-    color4: black
-    color5: cyan
-    color6: magenta
-    color7: yellow
-    color8: dark red
-    color9: dark green
-    comment: ''
-    ctrlpanel: 'False'
-    entags: 'True'
-    grid: 'False'
-    gui_hint: ''
-    label1: Signal 1
-    label10: Signal 10
-    label2: Signal 2
-    label3: Signal 3
-    label4: Signal 4
-    label5: Signal 5
-    label6: Signal 6
-    label7: Signal 7
-    label8: Signal 8
-    label9: Signal 9
-    legend: 'True'
-    marker1: '-1'
-    marker10: '-1'
-    marker2: '-1'
-    marker3: '-1'
-    marker4: '-1'
-    marker5: '-1'
-    marker6: '-1'
-    marker7: '-1'
-    marker8: '-1'
-    marker9: '-1'
-    name: Audio Signal
-    nconnections: '1'
-    size: '1024'
-    srate: 48e3
-    stemplot: 'False'
-    style1: '1'
-    style10: '1'
-    style2: '1'
-    style3: '1'
-    style4: '1'
-    style5: '1'
-    style6: '1'
-    style7: '1'
-    style8: '1'
-    style9: '1'
-    tr_chan: '0'
-    tr_delay: '0'
-    tr_level: '0.0'
-    tr_mode: qtgui.TRIG_MODE_FREE
-    tr_slope: qtgui.TRIG_SLOPE_POS
-    tr_tag: '""'
-    type: float
-    update_time: '0.10'
-    width1: '1'
-    width10: '1'
-    width2: '1'
-    width3: '1'
-    width4: '1'
-    width5: '1'
-    width6: '1'
-    width7: '1'
-    width8: '1'
-    width9: '1'
-    ylabel: Amplitude
-    ymax: '1'
-    ymin: '-1'
-    yunit: '""'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1280, 592.0]
-    rotation: 0
-    state: enabled
+    state: disabled
 - name: rational_resampler_xxx_0
   id: rational_resampler_xxx
   parameters:
@@ -856,13 +864,15 @@ blocks:
     agc0: 'False'
     agc1: 'False'
     alias: ''
-    antenna0: LNAL
+    antenna0: LNAW
     antenna1: ''
     bandwidth0: '0'
     bandwidth1: '0'
     center_freq0: fm_station - (tune_freq)
     center_freq1: '0'
-    comment: ''
+    comment: 'If using LimeSDR Mini: LNAW
+
+      If using LimeSDR USB: LNAL'
     dc_offset0: '0'
     dc_offset1: '0'
     dc_removal0: 'True'
@@ -906,8 +916,9 @@ connections:
 - [blocks_throttle2_0, '0', qtgui_freq_sink_x_0, '0']
 - [filter_fft_low_pass_filter_0, '0', analog_quadrature_demod_cf_0, '0']
 - [filter_fft_low_pass_filter_0, '0', qtgui_freq_sink_x_0_0, '0']
-- [rational_resampler_xxx_0, '0', blocks_multiply_const_vxx_0, '0']
-- [rational_resampler_xxx_0, '0', qtgui_time_sink_x_1, '0']
+- [filter_fft_low_pass_filter_1, '0', blocks_multiply_const_vxx_0, '0']
+- [filter_fft_low_pass_filter_1, '0', qtgui_freq_sink_x_2, '0']
+- [rational_resampler_xxx_0, '0', filter_fft_low_pass_filter_1, '0']
 - [soapy_custom_source_0, '0', blocks_head_0, '0']
 - [soapy_custom_source_0, '0', blocks_multiply_conjugate_cc_0, '0']
 - [soapy_custom_source_0, '0', qtgui_freq_sink_x_0, '0']
