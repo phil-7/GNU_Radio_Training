@@ -7,3 +7,5 @@ __pycache__/
 .f32
 .DS_Store
 venv/
+*.h5
+*.png
