@@ -6,3 +6,4 @@ __pycache__/
 *.c64
 .f32
 .DS_Store
+venv/
