@@ -33,6 +33,62 @@ options:
     state: enabled
 
 blocks:
+- name: broadband_amplitude
+  id: variable
+  parameters:
+    comment: ''
+    value: np.sqrt(10**(broadband_cn0 / 10) * n0)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1064, 8.0]
+    rotation: 0
+    state: enabled
+- name: broadband_cn0
+  id: variable_qtgui_entry
+  parameters:
+    comment: CN0 = signal power / N0
+    entry_signal: editingFinished
+    gui_hint: ''
+    label: Broadband (Noise) CN0 (dB)
+    type: real
+    value: '60'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [928, 4.0]
+    rotation: 0
+    state: enabled
+- name: broadband_freq
+  id: variable_qtgui_entry
+  parameters:
+    comment: ''
+    entry_signal: editingFinished
+    gui_hint: ''
+    label: Broadband Frequency (Hz)
+    type: real
+    value: -300e3
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1072, 156.0]
+    rotation: 0
+    state: enabled
+- name: integration_length_seconds
+  id: variable
+  parameters:
+    comment: ''
+    value: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [896, 376.0]
+    rotation: 0
+    state: enabled
 - name: n0
   id: variable
   parameters:
@@ -45,6 +101,18 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [392, 16.0]
+    rotation: 0
+    state: enabled
+- name: nfft
+  id: variable
+  parameters:
+    comment: ''
+    value: '4096'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [488, 304.0]
     rotation: 0
     state: enabled
 - name: noise_amplitude
@@ -61,6 +129,34 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [264, 56.0]
+    rotation: 0
+    state: enabled
+- name: noise_bandwidth
+  id: variable_qtgui_entry
+  parameters:
+    comment: ''
+    entry_signal: editingFinished
+    gui_hint: ''
+    label: Noise Bandwidth (Hz)
+    type: real
+    value: 150e3
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [800, 12.0]
+    rotation: 0
+    state: enabled
+- name: number_integrations
+  id: variable
+  parameters:
+    comment: = samp_rate / nfft
+    value: round(samp_rate / nfft)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [800, 376.0]
     rotation: 0
     state: enabled
 - name: samp_rate
@@ -103,6 +199,22 @@ blocks:
     coordinate: [528, 8.0]
     rotation: 0
     state: enabled
+- name: tone_freq
+  id: variable_qtgui_entry
+  parameters:
+    comment: ''
+    entry_signal: editingFinished
+    gui_hint: ''
+    label: Tone Frequency (Hz)
+    type: real
+    value: 200e3
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1064, 80.0]
+    rotation: 0
+    state: enabled
 - name: analog_noise_source_x_0
   id: analog_noise_source_x
   parameters:
@@ -122,6 +234,25 @@ blocks:
     coordinate: [16, 108.0]
     rotation: 0
     state: enabled
+- name: analog_noise_source_x_1
+  id: analog_noise_source_x
+  parameters:
+    affinity: ''
+    alias: ''
+    amp: broadband_amplitude
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    noise_type: analog.GR_GAUSSIAN
+    seed: '0'
+    type: complex
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 364.0]
+    rotation: 0
+    state: enabled
 - name: analog_sig_source_x_0
   id: analog_sig_source_x
   parameters:
@@ -129,7 +260,7 @@ blocks:
     alias: ''
     amp: tone_amplitude
     comment: ''
-    freq: '1000'
+    freq: tone_freq
     maxoutbuf: '0'
     minoutbuf: '0'
     offset: '0'
@@ -145,8 +276,85 @@ blocks:
     coordinate: [0, 224.0]
     rotation: 0
     state: enabled
+- name: analog_sig_source_x_1
+  id: analog_sig_source_x
+  parameters:
+    affinity: ''
+    alias: ''
+    amp: '1'
+    comment: ''
+    freq: broadband_freq
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    offset: '0'
+    phase: '0'
+    samp_rate: samp_rate
+    showports: 'False'
+    type: complex
+    waveform: analog.GR_COS_WAVE
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [56, 484.0]
+    rotation: 0
+    state: enabled
 - name: blocks_add_xx_0
   id: blocks_add_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_inputs: '3'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [464, 140.0]
+    rotation: 0
+    state: enabled
+- name: blocks_complex_to_mag_squared_0
+  id: blocks_complex_to_mag_squared
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: Get Power
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    vlen: nfft
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [760, 484.0]
+    rotation: 0
+    state: enabled
+- name: blocks_integrate_xx_0
+  id: blocks_integrate_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: 'It will send 100 inputs and produce an output
+
+      output = sum of all those inputs'
+    decim: number_integrations
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: float
+    vlen: nfft
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [792, 584.0]
+    rotation: 0
+    state: enabled
+- name: blocks_multiply_xx_0
+  id: blocks_multiply_xx
   parameters:
     affinity: ''
     alias: ''
@@ -160,7 +368,63 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [376, 216.0]
+    coordinate: [376, 372.0]
+    rotation: 0
+    state: enabled
+- name: blocks_nlog10_ff_0
+  id: blocks_nlog10_ff
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    k: '0'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    n: '10'
+    vlen: nfft
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [944, 476.0]
+    rotation: 0
+    state: enabled
+- name: blocks_repeat_0
+  id: blocks_repeat
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: 'Produce 1 output every second from Integrate
+
+      Repeating that output 100 times'
+    interp: '100'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: float
+    vlen: nfft
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1016, 596.0]
+    rotation: 0
+    state: enabled
+- name: blocks_stream_to_vector_0
+  id: blocks_stream_to_vector
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_items: nfft
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [456, 484.0]
     rotation: 0
     state: enabled
 - name: blocks_throttle2_1
@@ -184,6 +448,29 @@ blocks:
     coordinate: [216, 280.0]
     rotation: 0
     state: enabled
+- name: fft_vxx_0
+  id: fft_vxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: 'Convert from time domain
+
+      to freq domain'
+    fft_size: nfft
+    forward: 'True'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    nthreads: '1'
+    shift: 'True'
+    type: complex
+    window: window.blackmanharris(nfft)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [592, 464.0]
+    rotation: 0
+    state: enabled
 - name: import_0
   id: import
   parameters:
@@ -195,6 +482,34 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [168, 88.0]
+    rotation: 0
+    state: enabled
+- name: pfb_arb_resampler_xxx_0
+  id: pfb_arb_resampler_xxx
+  parameters:
+    affinity: ''
+    alias: ''
+    atten: '100'
+    comment: '= samp_rate / noise bandwidth
+
+      Similar to Rational Resampler
+
+      Except it takes any number
+
+
+      This creates a small noise band (smaller bandwidth)'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    nfilts: '32'
+    rrate: samp_rate / noise_bandwidth
+    samp_delay: '0'
+    taps: ''
+    type: ccf
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [168, 360.0]
     rotation: 0
     state: enabled
 - name: qtgui_freq_sink_x_0
@@ -275,7 +590,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [640, 152.0]
+    coordinate: [576, 108.0]
     rotation: 0
     state: enabled
 - name: qtgui_time_sink_x_0
@@ -372,16 +687,133 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [536, 280.0]
+    coordinate: [576, 236.0]
+    rotation: 0
+    state: disabled
+- name: qtgui_vector_sink_f_0
+  id: qtgui_vector_sink_f
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    autoscale: 'True'
+    average: '1.0'
+    color1: '"blue"'
+    color10: '"dark blue"'
+    color2: '"red"'
+    color3: '"green"'
+    color4: '"black"'
+    color5: '"cyan"'
+    color6: '"magenta"'
+    color7: '"yellow"'
+    color8: '"dark red"'
+    color9: '"dark green"'
+    comment: "On the plot, every time the plot changes, \n100 FFTs have been computed\
+      \ and the sum are being \nshown (our own freq plot)"
+    grid: 'False'
+    gui_hint: ''
+    label1: ''
+    label10: ''
+    label2: ''
+    label3: ''
+    label4: ''
+    label5: ''
+    label6: ''
+    label7: ''
+    label8: ''
+    label9: ''
+    legend: 'True'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    name: '""'
+    nconnections: '1'
+    ref_level: '0'
+    showports: 'False'
+    update_time: '0.10'
+    vlen: nfft
+    width1: '1'
+    width10: '1'
+    width2: '1'
+    width3: '1'
+    width4: '1'
+    width5: '1'
+    width6: '1'
+    width7: '1'
+    width8: '1'
+    width9: '1'
+    x_axis_label: '"x-Axis"'
+    x_start: -samp_rate / 2
+    x_step: samp_rate / nfft
+    x_units: '""'
+    y_axis_label: '"y-Axis"'
+    y_units: '""'
+    ymax: '90'
+    ymin: '-50'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1112, 472.0]
+    rotation: 0
+    state: enabled
+- name: virtual_sink_0
+  id: virtual_sink
+  parameters:
+    alias: ''
+    comment: 'Connected to any sink
+
+      with the same name'
+    stream_id: signal
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [704, 172.0]
+    rotation: 0
+    state: enabled
+- name: virtual_source_0
+  id: virtual_source
+  parameters:
+    alias: ''
+    comment: 'Connects to any sink
+
+      with the same name'
+    stream_id: signal
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [320, 484.0]
     rotation: 0
     state: enabled
 
 connections:
 - [analog_noise_source_x_0, '0', blocks_add_xx_0, '0']
+- [analog_noise_source_x_1, '0', pfb_arb_resampler_xxx_0, '0']
 - [analog_sig_source_x_0, '0', blocks_throttle2_1, '0']
+- [analog_sig_source_x_1, '0', blocks_multiply_xx_0, '1']
 - [blocks_add_xx_0, '0', qtgui_freq_sink_x_0, '0']
 - [blocks_add_xx_0, '0', qtgui_time_sink_x_0, '0']
+- [blocks_add_xx_0, '0', virtual_sink_0, '0']
+- [blocks_complex_to_mag_squared_0, '0', blocks_integrate_xx_0, '0']
+- [blocks_integrate_xx_0, '0', blocks_nlog10_ff_0, '0']
+- [blocks_multiply_xx_0, '0', blocks_add_xx_0, '2']
+- [blocks_nlog10_ff_0, '0', blocks_repeat_0, '0']
+- [blocks_repeat_0, '0', qtgui_vector_sink_f_0, '0']
+- [blocks_stream_to_vector_0, '0', fft_vxx_0, '0']
 - [blocks_throttle2_1, '0', blocks_add_xx_0, '1']
+- [fft_vxx_0, '0', blocks_complex_to_mag_squared_0, '0']
+- [pfb_arb_resampler_xxx_0, '0', blocks_multiply_xx_0, '0']
+- [virtual_source_0, '0', blocks_stream_to_vector_0, '0']
 
 metadata:
   file_format: 1
