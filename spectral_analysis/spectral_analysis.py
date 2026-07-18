@@ -70,12 +70,12 @@ class spectral_analysis(gr.top_block, Qt.QWidget):
         self.tone_cn0 = tone_cn0 = 60
         self.nfft = nfft = 4096
         self.n0 = n0 = noise_amplitude**2 / samp_rate
+        self.integration_length_seconds = integration_length_seconds = 1
         self.broadband_cn0 = broadband_cn0 = 60
         self.tone_freq = tone_freq = 200e3
         self.tone_amplitude = tone_amplitude = np.sqrt(10**(tone_cn0 / 10) * n0)
-        self.number_integrations = number_integrations = round(samp_rate / nfft)
+        self.number_integrations = number_integrations = round(samp_rate / nfft * integration_length_seconds)
         self.noise_bandwidth = noise_bandwidth = 150e3
-        self.integration_length_seconds = integration_length_seconds = 1
         self.broadband_freq = broadband_freq = (-300e3)
         self.broadband_amplitude = broadband_amplitude = np.sqrt(10**(broadband_cn0 / 10) * n0)
 
@@ -205,7 +205,7 @@ class spectral_analysis(gr.top_block, Qt.QWidget):
             flt_size=32,
             atten=100)
         self.pfb_arb_resampler_xxx_0.declare_sample_delay(0)
-        self.fft_vxx_0 = fft.fft_vcc(nfft, True, window.blackmanharris(nfft), True, 1)
+        self.fft_vxx_0 = fft.fft_vcc(nfft, True, window.rectangular(nfft), True, 1)
         self._broadband_cn0_tool_bar = Qt.QToolBar(self)
         self._broadband_cn0_tool_bar.addWidget(Qt.QLabel("Broadband (Noise) CN0 (dB)" + ": "))
         self._broadband_cn0_line_edit = Qt.QLineEdit(str(self.broadband_cn0))
@@ -261,7 +261,7 @@ class spectral_analysis(gr.top_block, Qt.QWidget):
     def set_samp_rate(self, samp_rate):
         self.samp_rate = samp_rate
         self.set_n0(self.noise_amplitude**2 / self.samp_rate)
-        self.set_number_integrations(round(self.samp_rate / self.nfft))
+        self.set_number_integrations(round(self.samp_rate / self.nfft * self.integration_length_seconds))
         self.analog_sig_source_x_0.set_sampling_freq(self.samp_rate)
         self.analog_sig_source_x_1.set_sampling_freq(self.samp_rate)
         self.blocks_throttle2_1.set_sample_rate(self.samp_rate)
@@ -291,8 +291,8 @@ class spectral_analysis(gr.top_block, Qt.QWidget):
 
     def set_nfft(self, nfft):
         self.nfft = nfft
-        self.set_number_integrations(round(self.samp_rate / self.nfft))
-        self.fft_vxx_0.set_window(window.blackmanharris(self.nfft))
+        self.set_number_integrations(round(self.samp_rate / self.nfft * self.integration_length_seconds))
+        self.fft_vxx_0.set_window(window.rectangular(self.nfft))
         self.qtgui_vector_sink_f_0.set_x_axis((-self.samp_rate / 2), (self.samp_rate / self.nfft))
 
     def get_n0(self):
@@ -302,6 +302,13 @@ class spectral_analysis(gr.top_block, Qt.QWidget):
         self.n0 = n0
         self.set_broadband_amplitude(np.sqrt(10**(self.broadband_cn0 / 10) * self.n0))
         self.set_tone_amplitude(np.sqrt(10**(self.tone_cn0 / 10) * self.n0))
+
+    def get_integration_length_seconds(self):
+        return self.integration_length_seconds
+
+    def set_integration_length_seconds(self, integration_length_seconds):
+        self.integration_length_seconds = integration_length_seconds
+        self.set_number_integrations(round(self.samp_rate / self.nfft * self.integration_length_seconds))
 
     def get_broadband_cn0(self):
         return self.broadband_cn0
@@ -339,12 +346,6 @@ class spectral_analysis(gr.top_block, Qt.QWidget):
         self.noise_bandwidth = noise_bandwidth
         Qt.QMetaObject.invokeMethod(self._noise_bandwidth_line_edit, "setText", Qt.Q_ARG("QString", eng_notation.num_to_str(self.noise_bandwidth)))
         self.pfb_arb_resampler_xxx_0.set_rate((self.samp_rate / self.noise_bandwidth))
-
-    def get_integration_length_seconds(self):
-        return self.integration_length_seconds
-
-    def set_integration_length_seconds(self, integration_length_seconds):
-        self.integration_length_seconds = integration_length_seconds
 
     def get_broadband_freq(self):
         return self.broadband_freq
