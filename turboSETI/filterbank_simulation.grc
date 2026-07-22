@@ -221,7 +221,7 @@ blocks:
     bus_structure: null
     coordinate: [64, 308.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: analog_sig_source_x_0_0
   id: analog_sig_source_x
   parameters:
@@ -244,7 +244,7 @@ blocks:
     bus_structure: null
     coordinate: [48, 516.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: blocks_add_xx_0
   id: blocks_add_xx
   parameters:
@@ -348,7 +348,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [320, 556.0]
+    coordinate: [256, 596.0]
     rotation: 0
     state: disabled
 - name: blocks_stream_to_vector_0
@@ -384,9 +384,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [488, 540.0]
+    coordinate: [400, 532.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: fft_vxx_0
   id: fft_vxx
   parameters:
@@ -426,6 +426,7 @@ connections:
 - [analog_noise_source_x_0, '0', blocks_add_xx_0, '0']
 - [analog_sig_source_x_0, '0', blocks_add_xx_0, '1']
 - [analog_sig_source_x_0_0, '0', blocks_repeat_0, '0']
+- [analog_sig_source_x_0_0, '0', blocks_vco_c_0, '0']
 - [blocks_add_xx_0, '0', blocks_head_0, '0']
 - [blocks_complex_to_mag_squared_0, '0', blocks_integrate_xx_0, '0']
 - [blocks_head_0, '0', blocks_stream_to_vector_0, '0']

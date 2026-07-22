@@ -4,7 +4,7 @@ __pycache__/
 *.wav
 *.log
 *.c64
-.f32
+*.f32
 .DS_Store
 venv/
 *.h5

@@ -53,6 +53,7 @@ class filterbank_simulation(gr.top_block):
         ##################################################
 
         self.fft_vxx_0 = fft.fft_vcc(nfft, True, [], True, 1)
+        self.blocks_vco_c_0 = blocks.vco_c(samp_rate, (2 * np.pi), tone_amplitude)
         self.blocks_stream_to_vector_0 = blocks.stream_to_vector(gr.sizeof_gr_complex*1, nfft)
         self.blocks_integrate_xx_0 = blocks.integrate_ff(n_int, nfft)
         self.blocks_head_0 = blocks.head(gr.sizeof_gr_complex*1, (round(samp_rate * 300)))
@@ -60,7 +61,7 @@ class filterbank_simulation(gr.top_block):
         self.blocks_file_sink_0.set_unbuffered(False)
         self.blocks_complex_to_mag_squared_0 = blocks.complex_to_mag_squared(nfft)
         self.blocks_add_xx_0 = blocks.add_vcc(1)
-        self.analog_sig_source_x_0 = analog.sig_source_c(samp_rate, analog.GR_COS_WAVE, 0.5e6, (np.sqrt(10**(tone_cn0 / 10) * n0)), 0, 0)
+        self.analog_sig_source_x_0_0 = analog.sig_source_f((samp_rate / time_resampling), analog.GR_SAW_WAVE, (1/drift_duration), (drift_rate * drift_duration), 0, (-np.pi))
         self.analog_noise_source_x_0 = analog.noise_source_c(analog.GR_GAUSSIAN, noise_amplitude, 0)
 
 
@@ -68,12 +69,13 @@ class filterbank_simulation(gr.top_block):
         # Connections
         ##################################################
         self.connect((self.analog_noise_source_x_0, 0), (self.blocks_add_xx_0, 0))
-        self.connect((self.analog_sig_source_x_0, 0), (self.blocks_add_xx_0, 1))
+        self.connect((self.analog_sig_source_x_0_0, 0), (self.blocks_vco_c_0, 0))
         self.connect((self.blocks_add_xx_0, 0), (self.blocks_head_0, 0))
         self.connect((self.blocks_complex_to_mag_squared_0, 0), (self.blocks_integrate_xx_0, 0))
         self.connect((self.blocks_head_0, 0), (self.blocks_stream_to_vector_0, 0))
         self.connect((self.blocks_integrate_xx_0, 0), (self.blocks_file_sink_0, 0))
         self.connect((self.blocks_stream_to_vector_0, 0), (self.fft_vxx_0, 0))
+        self.connect((self.blocks_vco_c_0, 0), (self.blocks_add_xx_0, 1))
         self.connect((self.fft_vxx_0, 0), (self.blocks_complex_to_mag_squared_0, 0))
 
 
@@ -85,7 +87,7 @@ class filterbank_simulation(gr.top_block):
         self.set_hz_per_bin(self.samp_rate / self.nfft)
         self.set_n0(self.noise_amplitude**2 / self.samp_rate)
         self.set_sec_per_int(self.nfft * self.n_int / self.samp_rate)
-        self.analog_sig_source_x_0.set_sampling_freq(self.samp_rate)
+        self.analog_sig_source_x_0_0.set_sampling_freq((self.samp_rate / self.time_resampling))
         self.blocks_head_0.set_length((round(self.samp_rate * 300)))
 
     def get_noise_amplitude(self):
@@ -102,7 +104,6 @@ class filterbank_simulation(gr.top_block):
     def set_tone_cn0(self, tone_cn0):
         self.tone_cn0 = tone_cn0
         self.set_tone_amplitude(np.sqrt(10**(self.tone_cn0 / 10) * self.n0))
-        self.analog_sig_source_x_0.set_amplitude((np.sqrt(10**(self.tone_cn0 / 10) * self.n0)))
 
     def get_nfft(self):
         return self.nfft
@@ -125,7 +126,6 @@ class filterbank_simulation(gr.top_block):
     def set_n0(self, n0):
         self.n0 = n0
         self.set_tone_amplitude(np.sqrt(10**(self.tone_cn0 / 10) * self.n0))
-        self.analog_sig_source_x_0.set_amplitude((np.sqrt(10**(self.tone_cn0 / 10) * self.n0)))
 
     def get_tone_amplitude(self):
         return self.tone_amplitude
@@ -138,6 +138,7 @@ class filterbank_simulation(gr.top_block):
 
     def set_time_resampling(self, time_resampling):
         self.time_resampling = time_resampling
+        self.analog_sig_source_x_0_0.set_sampling_freq((self.samp_rate / self.time_resampling))
 
     def get_sec_per_int(self):
         return self.sec_per_int
@@ -156,12 +157,15 @@ class filterbank_simulation(gr.top_block):
 
     def set_drift_rate(self, drift_rate):
         self.drift_rate = drift_rate
+        self.analog_sig_source_x_0_0.set_amplitude((self.drift_rate * self.drift_duration))
 
     def get_drift_duration(self):
         return self.drift_duration
 
     def set_drift_duration(self, drift_duration):
         self.drift_duration = drift_duration
+        self.analog_sig_source_x_0_0.set_frequency((1/self.drift_duration))
+        self.analog_sig_source_x_0_0.set_amplitude((self.drift_rate * self.drift_duration))
 
 
 
